@@ -1,0 +1,44 @@
+<!-- home.html -->
+{% extends "base.html" %}
+
+{% block title %}Inicio - Mi App{% endblock %}
+
+{% block content %}
+
+<section class="hero is-primary is-bold">
+<div class="hero-body">
+<div class="container">
+<h1 class="title is-size-1">
+Bienvenido a Mi App
+</h1>
+<h2 class="subtitle is-size-4">
+Una aplicación elegante construida con Flask y Bulma CSS.
+</h2>
+</div>
+</div>
+</section>
+
+<div class="box my-5">
+<p class="is-size-5 has-text-weight-semibold">Estado de la Aplicación:</p>
+{% if is_logged_in %}
+<p class="notification is-success is-light">
+¡Hola, {{ user_name }}! Has iniciado sesión con éxito. Esta es la vista principal.
+</p>
+{% else %}
+<p class="notification is-info is-light">
+Actualmente no has iniciado sesión. Por favor, <a href="{{ url_for('user.login') }}">inicia sesión</a> o <a href="{{ url_for('user.register') }}">regístrate</a> para acceder a más funcionalidades.
+</p>
+{% endif %}
+
+<div class="content mt-4">
+    <p>
+        Esta plataforma sigue la arquitectura solicitada con una capa de base de datos (`db.py`), un módulo de usuarios (`user.py` como Blueprint) y la aplicación principal (`app.py`). La interfaz es completamente responsive gracias a Bulma CSS.
+    </p>
+    <p>
+        Prueba el **cambio de tema** en la esquina superior derecha (Claro, Oscuro, Sepia).
+    </p>
+</div>
+
+
+</div>
+{% endblock %}

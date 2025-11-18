@@ -1,0 +1,155 @@
+<!-- REGISTER -->
+{% extends "base.html" %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+
+<section class="section">
+<div class="columns is-centered">
+<div class="column is-three-fifths-desktop is-four-fifths-tablet is-full-mobile">
+<div class="box">
+<h1 class="title has-text-centered">Crear Nueva Cuenta</h1>
+
+            <form method="POST" action="{{ url_for('user.register') }}">
+                <!-- Fila 1: Nombre y Apellidos -->
+                <div class="columns">
+                    <div class="field column is-one-third">
+                        <label class="label" for="name">Nombre</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" id="name" name="name" placeholder="Tu Nombre" required pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ]+" title="No se permiten espacios ni caracteres especiales." oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1).toLowerCase().replace(/\s/g, '')">
+                            <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+                        </div>
+                    </div>
+                    <div class="field column is-one-third">
+                        <label class="label" for="first_lastname">Primer Apellido</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" id="first_lastname" name="first_lastname" placeholder="Primer Apellido" required pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ]+" title="No se permiten espacios ni caracteres especiales." oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1).toLowerCase().replace(/\s/g, '')">
+                            <span class="icon is-small is-left"><i class="fas fa-user-tag"></i></span>
+                        </div>
+                    </div>
+                    <div class="field column is-one-third">
+                        <label class="label" for="second_lastname">Segundo Apellido (Opcional)</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" id="second_lastname" name="second_lastname" placeholder="Segundo Apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ]*" title="No se permiten espacios ni caracteres especiales." oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1).toLowerCase().replace(/\s/g, '')">
+                            <span class="icon is-small is-left"><i class="fas fa-user-tag"></i></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fila 2: Teléfono, Fecha, Cédula (oculta) -->
+                <div class="columns">
+                    <div class="field column is-one-third">
+                        <label class="label" for="phone">Teléfono (8 dígitos)</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="tel" id="phone" name="phone" placeholder="88888888" required pattern="[0-9]{8}" maxlength="8" minlength="8" title="Solo 8 dígitos numéricos, sin espacios ni caracteres.">
+                            <span class="icon is-small is-left"><i class="fas fa-phone"></i></span>
+                        </div>
+                    </div>
+                    <div class="field column is-one-third">
+                        <label class="label" for="birthday">Fecha de Cumpleaños</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="date" id="birthday" name="birthday" required>
+                            <span class="icon is-small is-left"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <!-- Cédula (Campo NO VISIBLE en Registro, solo en Editar) -->
+                    <div class="field column is-one-third is-hidden">
+                        <label class="label" for="cedula">Cédula (No visible)</label>
+                        <div class="control">
+                            <input class="input" type="text" id="cedula" name="cedula">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fila 3: Email -->
+                <div class="field">
+                    <label class="label" for="email">Email</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+                        <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+                    </div>
+                </div>
+
+                <!-- Fila 4: Contraseñas -->
+                <div class="columns">
+                    <div class="field column is-half">
+                        <label class="label" for="password">Contraseña</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" type="password" id="password" name="password" placeholder="********" required>
+                            <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                            <span class="icon is-small is-right password-toggle" style="cursor: pointer;">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field column is-half">
+                        <label class="label" for="confirm_password">Confirmar Contraseña</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="********" required>
+                            <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                            <span class="icon is-small is-right password-toggle" style="cursor: pointer;">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón de Envío -->
+                <div class="field mt-5">
+                    <div class="control">
+                        <button class="button is-primary is-fullwidth" type="submit">
+                            Registrar Cuenta
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Enlace de Login -->
+                <div class="has-text-centered mt-4">
+                    <p>¿Ya tengo una cuenta? <a href="{{ url_for('user.login') }}">Iniciar Sesión.</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</section>
+
+<!-- Script para la validación del input de nombre/apellido (sin espacios y Title Case) -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+// La lógica de toggle de contraseña ya está en base.html
+
+    // Función para aplicar Title Case y remover espacios/caracteres especiales
+    function sanitizeAndTitle(input) {
+        // Remover espacios y mantener solo letras (en el backend también se valida)
+        let value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, &#39;&#39;);
+        if (value.length &gt; 0) {
+            // Title Case: Primera letra mayúscula, el resto minúscula
+            input.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+        } else {
+            input.value = &#39;&#39;;
+        }
+    }
+    
+    // Aplicar a los campos de nombre y apellidos
+    document.getElementById(&#39;name&#39;).addEventListener(&#39;input&#39;, (e) =&gt; sanitizeAndTitle(e.target));
+    document.getElementById(&#39;first_lastname&#39;).addEventListener(&#39;input&#39;, (e) =&gt; sanitizeAndTitle(e.target));
+    
+    const secondLastnameInput = document.getElementById(&#39;second_lastname&#39;);
+    if (secondLastnameInput) {
+         secondLastnameInput.addEventListener(&#39;input&#39;, (e) =&gt; sanitizeAndTitle(e.target));
+    }
+
+    // Validación de teléfono (solo números, 8 dígitos)
+    document.getElementById(&#39;phone&#39;).addEventListener(&#39;input&#39;, function(e) {
+        e.target.value = e.target.value.replace(/[^0-9]/g, &#39;&#39;).substring(0, 8);
+    });
+});
+
+
+</script>
+
+{% endblock %}

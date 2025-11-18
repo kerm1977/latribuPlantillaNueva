@@ -1,0 +1,256 @@
+<!-- base.html -->
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Mi App Bulma Flask{% endblock %}</title>
+<!-- Carga Bulma CSS (versión CDN para simplicidad) -->
+<link rel="stylesheet" href="https://www.google.com/search?q=https://cdn.jsdelivr.net/npm/bulma%400.9.4/css/bulma.min.css">
+<!-- Iconos Font Awesome -->
+<link rel="stylesheet" href="https://www.google.com/search?q=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+<style>
+    /* Estilos personalizados para el tema */
+    :root {
+        /* Tema Claro (Default) */
+        --bg-color: #f5f5f5;
+        --text-color: #363636;
+        --primary-color: #485fc7;
+        --box-bg: #ffffff;
+    }
+
+    /* Tema Oscuro */
+    html[data-theme='dark'] {
+        --bg-color: #2f3640;
+        --text-color: #f5f5f5;
+        --primary-color: #48c48a;
+        --box-bg: #3c444f;
+    }
+
+    /* Tema Sepia */
+    html[data-theme='sepia'] {
+        --bg-color: #f1e7d6;
+        --text-color: #5a4a3a;
+        --primary-color: #795548;
+        --box-bg: #fffbf5;
+    }
+
+    /* Aplicación de variables al cuerpo y elementos Bulma */
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .navbar, .footer {
+        background-color: var(--box-bg) !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .box, .card {
+        background-color: var(--box-bg);
+        color: var(--text-color);
+        box-shadow: 0 0.5em 1em -0.125em rgba(0, 0, 0, 0.1), 0 0px 0 1px rgba(0, 0, 0, 0.02) !important;
+    }
+    .button.is-primary {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+    }
+    .navbar-item, .navbar-link {
+        color: var(--text-color) !important;
+    }
+    
+    /* Estilos para el switcher de tema */
+    .theme-switcher-dropdown .dropdown-content {
+        right: 0;
+        left: auto;
+        min-width: 100px;
+    }
+</style>
+
+
+</head>
+<body class="has-navbar-fixed-top">
+
+<!-- Navbar/Header -->
+<nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item is-size-4 has-text-weight-bold" href="{{ url_for('main.home') }}">
+            Mi App Flask
+        </a>
+
+        <!-- Menú hamburguesa para móvil/tablet -->
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="{{ url_for('main.home') }}">
+                Inicio
+            </a>
+        </div>
+
+        <div class="navbar-end">
+            <!-- Botón de cambio de tema (Derecha superior) -->
+            <div class="navbar-item theme-switcher-dropdown">
+                <div class="dropdown is-right">
+                    <div class="dropdown-trigger">
+                        <button class="button is-ghost" aria-haspopup="true" aria-controls="dropdown-menu">
+                            <span class="icon"><i class="fas fa-palette"></i></span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                            <a href="#" class="dropdown-item" data-theme="light">
+                                <span class="icon"><i class="fas fa-sun"></i></span> Claro
+                            </a>
+                            <a href="#" class="dropdown-item" data-theme="dark">
+                                <span class="icon"><i class="fas fa-moon"></i></span> Oscuro
+                            </a>
+                            <a href="#" class="dropdown-item" data-theme="sepia">
+                                <span class="icon"><i class="fas fa-tint"></i></span> Sepia
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navbar-item">
+                <div class="buttons">
+                    {% if 'user_id' in session %}
+                        <a class="button is-light" href="#">
+                            <span class="icon"><i class="fas fa-user"></i></span>
+                            <span>Perfil</span>
+                        </a>
+                        <a class="button is-danger is-light" href="{{ url_for('user.logout') }}">
+                            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                            <span>Salir</span>
+                        </a>
+                    {% else %}
+                        <a class="button is-primary" href="{{ url_for('user.register') }}">
+                            <strong>Registrarse</strong>
+                        </a>
+                        <a class="button is-light" href="{{ url_for('user.login') }}">
+                            Iniciar Sesión
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenido principal y mensajes Flash -->
+<main class="section">
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="notification is-{{ category if category != 'danger' else 'danger' }} is-light">
+                        <button class="delete"></button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Mi App Flask</strong> por Kenth1977. Desarrollado con Bulma CSS.
+        </p>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+    // Lógica de cambio de tema
+    document.addEventListener('DOMContentLoaded', () => {
+        const htmlEl = document.documentElement;
+        const themeKey = 'appTheme';
+
+        // 1. Cargar el tema guardado en localStorage o usar 'light' por defecto
+        const savedTheme = localStorage.getItem(themeKey) || 'light';
+        htmlEl.setAttribute('data-theme', savedTheme);
+
+        // 2. Manejar el menú desplegable del tema
+        const dropdown = document.querySelector('.theme-switcher-dropdown .dropdown');
+        const dropdownTrigger = document.querySelector('.theme-switcher-dropdown .dropdown-trigger');
+        
+        if (dropdownTrigger) {
+            dropdownTrigger.addEventListener('click', (event) => {
+                event.stopPropagation();
+                dropdown.classList.toggle('is-active');
+            });
+        }
+
+        // Cerrar dropdown al hacer clic fuera
+        document.addEventListener('click', (event) => {
+            if (dropdown && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('is-active');
+            }
+        });
+
+        // 3. Aplicar el tema seleccionado y guardarlo
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const newTheme = e.currentTarget.getAttribute('data-theme');
+                htmlEl.setAttribute('data-theme', newTheme);
+                localStorage.setItem(themeKey, newTheme);
+                dropdown.classList.remove('is-active');
+            });
+        });
+
+        // 4. Lógica para el menú hamburguesa (Móvil)
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        if ($navbarBurgers.length > 0) {
+            $navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+                    const target = document.getElementById(el.dataset.target);
+                    el.classList.toggle('is-active');
+                    target.classList.toggle('is-active');
+                });
+            });
+        }
+
+        // 5. Lógica para cerrar notificaciones flash
+        document.querySelectorAll('.notification .delete').forEach(closeButton => {
+            closeButton.addEventListener('click', () => {
+                closeButton.parentNode.remove();
+            });
+        });
+
+        // 6. Lógica para mostrar/ocultar contraseñas
+        document.querySelectorAll('.password-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const input = toggle.closest('.control').querySelector('input');
+                const icon = toggle.querySelector('.icon i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>

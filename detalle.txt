@@ -1,0 +1,46 @@
+#Detalle.txt
+
+
+
+PRIMERA PARTE
+
+antes de iniciar las vistas necesito dejar claro 
+app.py se va a encargar de toda la lógica y forma de ejecutar y los blueprints
+Va a crear automáticamente la base de datos en caso de no existir
+Va a poder crear un superusuario que el primero va a ser por default kenth1977@gmail.com con la contraseña CR129x7848n y esta va a estar protegida con bcrypt
+
+user.py va a contener absolutamente toda la información de registro de los usuarios, (editar, borrar, Pero estas dos vistas las crearé luego asi que no realizar cambios) 
+
+db.py va a contener las conecciones y la configuración de la base de datos como principal, Sqlite y como alternativa Mysql.
+
+Necesito una app creada con bulma.css. Esta va a estar dentro de la carpeta static css.
+Necesito que se conecte a una base de datos sqlite llamda db.db
+Necesito que base.html sea el padre y absolutamente todas las vistas hereden de base.html y que tenga un botón superior derecho para cambio de color de tema (Claro, Oscuro y Sepia)
+
+Necesito que exista una vista llamada home.html que va a ser la vista principal
+
+Necesito que exista una vista llamada login.html que contenga lo siguiente:
+Campo Email 
+Campo Contraseña y que este campo tenga el ojo para poder ver la contraseña
+select Recordar que recuerde la selección 
+Un enlace que diga aun no tengo una cuenta. Crear unal.
+
+Necesito que exista una vista llamda register.html que contenga lo siguiente:
+Nombre (No permite Espacios. Y Automáticamente será Title)
+Primer Apellido (No permite Espacios. Y Automáticamente será Title)
+Segundo Apellido(No obligatorio, No permite Espacios. Y Automáticamente será Title)
+Teléfono (Solo permite números. No permite espacios ni caracteres ni espacios ni más,  ni menos de 8 caracteres)
+Cédula (No obligatoria) y No visible. Solo será visible en Editar Usuario
+Fecha de Cumpleaños
+Email
+Contraseña y que este campo tenga el ojo para poder ver la contraseña
+Recordar Contraseña y que este campo tenga el ojo para poder ver la contraseña
+
+Además abajo existe un enlace que dice. Ya Tengo un Cuenta.
+que la app esté perfectamente formateada para vista movil, vista table y vista PC
+
+
+
+
+SEGUNDA PARTE
+Todos los botones de borrar o eliminar tienen que ser construidos con Flask y Flash
